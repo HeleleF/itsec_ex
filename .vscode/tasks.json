@@ -1,0 +1,42 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Create bigint test files",
+            "type": "shell",
+            "command": "node ./MyBigInt/testCreatorBigInt.js",
+            "problemMatcher": []
+        },
+        {
+            "label": "Create sha test file",
+            "type": "shell",
+            "command": "node ./MySHA256/testCreatorSHA.js",
+            "problemMatcher": []
+        },
+        {
+            "label": "Create aes test files",
+            "type": "shell",
+            "command": "node ./MyAES128/testCreatorAES.js",
+            "problemMatcher": []
+        },
+        {
+            "label": "Create bbs test files",
+            "type": "shell",
+            "command": "node ./MyBBS/testCreatorBBS.js",
+            "problemMatcher": []
+        },
+        {
+            "label": "Create rsa test files",
+            "type": "shell",
+            "command": "node ./MyRSA/testCreatorRSA.js",
+            "problemMatcher": []
+        },
+        {
+            "type": "npm",
+            "script": "start",
+            "problemMatcher": []
+        }
+    ]
+}

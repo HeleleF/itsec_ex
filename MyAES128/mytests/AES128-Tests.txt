@@ -1,0 +1,627 @@
+# Testdaten für AES-128
+#
+# # Kommentar bis Zeilenende
+# t is the title of the test
+# k Key   128 bit (16 Byte)
+# p plain 128 bit (16 byte)
+# Es gibt kein Padding und keine Blockmodi. Die Daten sind
+# immer 16 byte lang.
+# Alle Zahlen sind in Hex angegeben. Es gibt immer eine
+# gerade Anzahl von Hexzahlen, so dass alles immer in Bytes passt.
+# Es werden dieselben Bezeichnungen wie in FIPS verwendet.
+#
+# encryption
+#
+# Legend for CIPHER (ENCRYPT) (round number r = 0 to 10, 12 or 14):
+#     input: cipher input
+#     start: state at start of round[r]
+#     s_box: state after SubBytes()
+#     s_row: state after ShiftRows()
+#     m_col: state after MixColumns()
+#     k_sch: key schedule value for round[r]
+#     output: cipher output
+# Die "Messpunkte" sind bei der Verschluesselung die folgenden:
+#   --> "input"
+#   --> "k_sch"
+#   addRoundKey();
+#   for(i = 1; i <= loops; ++i) {
+#      -->"start"
+#      byteSub();
+#      -->"s_box"
+#      shiftRow();
+#      -->"s_row"
+#      // the last iteration does not use mixColumn
+#      if(i < loops) {
+#          mixColumn();
+#          -->"m_col"
+#      }
+#   -->"k_sch"
+#   addRoundKey();
+#   }
+#   -->"output"
+#
+# decryption
+#
+# Legend for INVERSE CIPHER (DECRYPT) (round number r = 0 to 10, 12 or 14):
+#     iinput: inverse cipher input
+#     istart: state at start of round[r]
+#     is_box: state after InvSubBytes()
+#     is_row: state after InvShiftRows()
+#     ik_sch: key schedule value for round[r]
+#     ik_add: state after AddRoundKey()
+#     ioutput: inverse cipher output
+# Die "Messpunkte" sind bei der Entschluesselung die folgenden:
+#  -->"iinput"
+#  -->ik_sch"
+#  addRoundKey();
+#  for(i = 1; i <= loops; ++i) {
+#     -->"istart"
+#     shiftRow();
+#     -->"is_row"
+#     byteSub();
+#     -->"is_box"
+#     -->"ik_sch"
+#     addRoundKey();
+#     // the last iteration does not use mixColumn
+#     if(i < loops) {
+#        -->"ik_add"
+#        mixColumn();
+#     } else {
+#        -->"ioutput"
+#     }
+#  }
+#
+# Der erste Test stammt aus FIPS-197 (ist also offiziell).
+#
+# Version 1b 29/11/2018 (typo in line74; 'auf' -> 'aus')
+#
+t=AES128-1
+k=000102030405060708090a0b0c0d0e0f
+p=00112233445566778899aabbccddeeff
+# encryption
+round[ 0].input  =00112233445566778899aabbccddeeff
+round[ 0].k_sch  =000102030405060708090a0b0c0d0e0f
+round[ 1].start  =00102030405060708090a0b0c0d0e0f0
+round[ 1].s_box  =63cab7040953d051cd60e0e7ba70e18c
+round[ 1].s_row  =6353e08c0960e104cd70b751bacad0e7
+round[ 1].m_col  =5f72641557f5bc92f7be3b291db9f91a
+round[ 1].k_sch  =d6aa74fdd2af72fadaa678f1d6ab76fe
+round[ 2].start  =89d810e8855ace682d1843d8cb128fe4
+round[ 2].s_box  =a761ca9b97be8b45d8ad1a611fc97369
+round[ 2].s_row  =a7be1a6997ad739bd8c9ca451f618b61
+round[ 2].m_col  =ff87968431d86a51645151fa773ad009
+round[ 2].k_sch  =b692cf0b643dbdf1be9bc5006830b3fe
+round[ 3].start  =4915598f55e5d7a0daca94fa1f0a63f7
+round[ 3].s_box  =3b59cb73fcd90ee05774222dc067fb68
+round[ 3].s_row  =3bd92268fc74fb735767cbe0c0590e2d
+round[ 3].m_col  =4c9c1e66f771f0762c3f868e534df256
+round[ 3].k_sch  =b6ff744ed2c2c9bf6c590cbf0469bf41
+round[ 4].start  =fa636a2825b339c940668a3157244d17
+round[ 4].s_box  =2dfb02343f6d12dd09337ec75b36e3f0
+round[ 4].s_row  =2d6d7ef03f33e334093602dd5bfb12c7
+round[ 4].m_col  =6385b79ffc538df997be478e7547d691
+round[ 4].k_sch  =47f7f7bc95353e03f96c32bcfd058dfd
+round[ 5].start  =247240236966b3fa6ed2753288425b6c
+round[ 5].s_box  =36400926f9336d2d9fb59d23c42c3950
+round[ 5].s_row  =36339d50f9b539269f2c092dc4406d23
+round[ 5].m_col  =f4bcd45432e554d075f1d6c51dd03b3c
+round[ 5].k_sch  =3caaa3e8a99f9deb50f3af57adf622aa
+round[ 6].start  =c81677bc9b7ac93b25027992b0261996
+round[ 6].s_box  =e847f56514dadde23f77b64fe7f7d490
+round[ 6].s_row  =e8dab6901477d4653ff7f5e2e747dd4f
+round[ 6].m_col  =9816ee7400f87f556b2c049c8e5ad036
+round[ 6].k_sch  =5e390f7df7a69296a7553dc10aa31f6b
+round[ 7].start  =c62fe109f75eedc3cc79395d84f9cf5d
+round[ 7].s_box  =b415f8016858552e4bb6124c5f998a4c
+round[ 7].s_row  =b458124c68b68a014b99f82e5f15554c
+round[ 7].m_col  =c57e1c159a9bd286f05f4be098c63439
+round[ 7].k_sch  =14f9701ae35fe28c440adf4d4ea9c026
+round[ 8].start  =d1876c0f79c4300ab45594add66ff41f
+round[ 8].s_box  =3e175076b61c04678dfc2295f6a8bfc0
+round[ 8].s_row  =3e1c22c0b6fcbf768da85067f6170495
+round[ 8].m_col  =baa03de7a1f9b56ed5512cba5f414d23
+round[ 8].k_sch  =47438735a41c65b9e016baf4aebf7ad2
+round[ 9].start  =fde3bad205e5d0d73547964ef1fe37f1
+round[ 9].s_box  =5411f4b56bd9700e96a0902fa1bb9aa1
+round[ 9].s_row  =54d990a16ba09ab596bbf40ea111702f
+round[ 9].m_col  =e9f74eec023020f61bf2ccf2353c21c7
+round[ 9].k_sch  =549932d1f08557681093ed9cbe2c974e
+round[10].start  =bd6e7c3df2b5779e0b61216e8b10b689
+round[10].s_box  =7a9f102789d5f50b2beffd9f3dca4ea7
+round[10].s_row  =7ad5fda789ef4e272bca100b3d9ff59f
+round[10].k_sch  =13111d7fe3944a17f307a78b4d2b30c5
+round[10].output =69c4e0d86a7b0430d8cdb78070b4c55a
+# decryption
+round[ 0].iinput =69c4e0d86a7b0430d8cdb78070b4c55a
+round[ 0].ik_sch =13111d7fe3944a17f307a78b4d2b30c5
+round[ 1].istart =7ad5fda789ef4e272bca100b3d9ff59f
+round[ 1].is_row =7a9f102789d5f50b2beffd9f3dca4ea7
+round[ 1].is_box =bd6e7c3df2b5779e0b61216e8b10b689
+round[ 1].ik_sch =549932d1f08557681093ed9cbe2c974e
+round[ 1].ik_add =e9f74eec023020f61bf2ccf2353c21c7
+round[ 2].istart =54d990a16ba09ab596bbf40ea111702f
+round[ 2].is_row =5411f4b56bd9700e96a0902fa1bb9aa1
+round[ 2].is_box =fde3bad205e5d0d73547964ef1fe37f1
+round[ 2].ik_sch =47438735a41c65b9e016baf4aebf7ad2
+round[ 2].ik_add =baa03de7a1f9b56ed5512cba5f414d23
+round[ 3].istart =3e1c22c0b6fcbf768da85067f6170495
+round[ 3].is_row =3e175076b61c04678dfc2295f6a8bfc0
+round[ 3].is_box =d1876c0f79c4300ab45594add66ff41f
+round[ 3].ik_sch =14f9701ae35fe28c440adf4d4ea9c026
+round[ 3].ik_add =c57e1c159a9bd286f05f4be098c63439
+round[ 4].istart =b458124c68b68a014b99f82e5f15554c
+round[ 4].is_row =b415f8016858552e4bb6124c5f998a4c
+round[ 4].is_box =c62fe109f75eedc3cc79395d84f9cf5d
+round[ 4].ik_sch =5e390f7df7a69296a7553dc10aa31f6b
+round[ 4].ik_add =9816ee7400f87f556b2c049c8e5ad036
+round[ 5].istart =e8dab6901477d4653ff7f5e2e747dd4f
+round[ 5].is_row =e847f56514dadde23f77b64fe7f7d490
+round[ 5].is_box =c81677bc9b7ac93b25027992b0261996
+round[ 5].ik_sch =3caaa3e8a99f9deb50f3af57adf622aa
+round[ 5].ik_add =f4bcd45432e554d075f1d6c51dd03b3c
+round[ 6].istart =36339d50f9b539269f2c092dc4406d23
+round[ 6].is_row =36400926f9336d2d9fb59d23c42c3950
+round[ 6].is_box =247240236966b3fa6ed2753288425b6c
+round[ 6].ik_sch =47f7f7bc95353e03f96c32bcfd058dfd
+round[ 6].ik_add =6385b79ffc538df997be478e7547d691
+round[ 7].istart =2d6d7ef03f33e334093602dd5bfb12c7
+round[ 7].is_row =2dfb02343f6d12dd09337ec75b36e3f0
+round[ 7].is_box =fa636a2825b339c940668a3157244d17
+round[ 7].ik_sch =b6ff744ed2c2c9bf6c590cbf0469bf41
+round[ 7].ik_add =4c9c1e66f771f0762c3f868e534df256
+round[ 8].istart =3bd92268fc74fb735767cbe0c0590e2d
+round[ 8].is_row =3b59cb73fcd90ee05774222dc067fb68
+round[ 8].is_box =4915598f55e5d7a0daca94fa1f0a63f7
+round[ 8].ik_sch =b692cf0b643dbdf1be9bc5006830b3fe
+round[ 8].ik_add =ff87968431d86a51645151fa773ad009
+round[ 9].istart =a7be1a6997ad739bd8c9ca451f618b61
+round[ 9].is_row =a761ca9b97be8b45d8ad1a611fc97369
+round[ 9].is_box =89d810e8855ace682d1843d8cb128fe4
+round[ 9].ik_sch =d6aa74fdd2af72fadaa678f1d6ab76fe
+round[ 9].ik_add =5f72641557f5bc92f7be3b291db9f91a
+round[10].istart =6353e08c0960e104cd70b751bacad0e7
+round[10].is_row =63cab7040953d051cd60e0e7ba70e18c
+round[10].is_box =00102030405060708090a0b0c0d0e0f0
+round[10].ik_sch =000102030405060708090a0b0c0d0e0f
+round[10].ioutput=00112233445566778899aabbccddeeff
+#--------------------------
+t=AES128-2
+k=2b7e151628aed2a6abf7158809cf4f3c
+p=6bc1bee22e409f96e93d7e117393172a
+# encryption
+round[ 0].input  =6bc1bee22e409f96e93d7e117393172a
+round[ 0].k_sch  =2b7e151628aed2a6abf7158809cf4f3c
+round[ 1].start  =40bfabf406ee4d3042ca6b997a5c5816
+round[ 1].s_box  =090862bf6f28e3042c747feeda4a6a47
+round[ 1].s_row  =09287f476f746abf2c4a6204da08e3ee
+round[ 1].m_col  =529f16c2978615cae01aae54ba1a2659
+round[ 1].k_sch  =a0fafe1788542cb123a339392a6c7605
+round[ 2].start  =f265e8d51fd2397bc3b9976d9076505c
+round[ 2].s_box  =894d9b03c0b512212e56883c6038534a
+round[ 2].s_row  =89b5884ac05653032e389b21604d123c
+round[ 2].m_col  =0f31e929319a3558aec9589339f04d87
+round[ 2].k_sch  =f2c295f27a96b9435935807a7359f67f
+round[ 3].start  =fdf37cdb4b0c8c1bf7fcd8e94aa9bbf8
+round[ 3].s_box  =540d10b9b3fe64af68b0611ed6d3ea41
+round[ 3].s_row  =54fe6141b3b0eab968d310afd60d641e
+round[ 3].m_col  =9151abe1e5541cfd014a713eda7e3134
+round[ 3].k_sch  =3d80477d4716fe3e1e237e446d7a883b
+round[ 4].start  =acd1ec9ca242e2c31f690f7ab704b90f
+round[ 4].s_box  =913ecede3a2c982ec0f976daa9f25676
+round[ 4].s_row  =912c76763af956dec0f2ce2ea93e98da
+round[ 4].m_col  =4d25cb1eecf716467658c73b49bcc9e9
+round[ 4].k_sch  =ef44a541a8525b7fb671253bdb0bad00
+round[ 5].start  =a2616e5f44a54d39c029e20092b764e9
+round[ 5].s_box  =3aef9fcf1b06e312baa598634fa9431e
+round[ 5].s_row  =3a06981e1ba543cfbaa99f124fefe363
+round[ 5].m_col  =f89b35ec4e40724e025b00c734d7d81b
+round[ 5].k_sch  =d4d1c6f87c839d87caf2b8bc11f915bc
+round[ 6].start  =2c4af31432c3efc9c8a9b87b252ecda7
+round[ 6].s_box  =71d60dfa232edfdde8d36c213f31bd5c
+round[ 6].s_row  =712e6c5c23d3bdfae8310ddd3fd6df21
+round[ 6].m_col  =a0c563696fb884e44840bfbee1d32f0a
+round[ 6].k_sch  =6d88a37a110b3efddbf98641ca0093fd
+round[ 7].start  =cd4dc0137eb3ba1993b939ff2bd3bcf7
+round[ 7].s_box  =bde3ba7df36df4d4dc561216f1666568
+round[ 7].s_row  =bd6d1268f356657ddc66bad4f1e3f416
+round[ 7].m_col  =ac394c731f8de8c76711b210253ddb33
+round[ 7].k_sch  =4e54f70e5f5fc9f384a64fb24ea6dc4f
+round[ 8].start  =e26dbb7d40d22134e3b7fda26b9b077c
+round[ 8].s_box  =983ceaff09b5fd1811a9543a7f14c510
+round[ 8].s_row  =98b5541009a9c5ff1114ea187f3cfd3a
+round[ 8].m_col  =ab05b572c8eb2b92ec04e2fd7d21ec34
+round[ 8].k_sch  =ead27321b58dbad2312bf5607f8d292f
+round[ 9].start  =41d7c6537d669140dd2f179d02acc51b
+round[ 9].s_box  =830eb4edff338109c115f05e7791a6af
+round[ 9].s_row  =8333f0afff15a6edc191b409770e815e
+round[ 9].m_col  =1741a11891c991688c36386f23ad82aa
+round[ 9].k_sch  =ac7766f319fadc2128d12941575c006e
+round[10].start  =bb36c7eb88334d49a4e7112e74f182c4
+round[10].s_box  =ea05c6e9c4c3e33b4994823192a1131c
+round[10].s_row  =eac3821cc49413e949a1c63b9205e331
+round[10].k_sch  =d014f9a8c9ee2589e13f0cc8b6630ca6
+round[10].output =3ad77bb40d7a3660a89ecaf32466ef97
+# decryption
+round[ 0].iinput =3ad77bb40d7a3660a89ecaf32466ef97
+round[ 0].ik_sch =d014f9a8c9ee2589e13f0cc8b6630ca6
+round[ 1].istart =eac3821cc49413e949a1c63b9205e331
+round[ 1].is_row =ea05c6e9c4c3e33b4994823192a1131c
+round[ 1].is_box =bb36c7eb88334d49a4e7112e74f182c4
+round[ 1].ik_sch =ac7766f319fadc2128d12941575c006e
+round[ 1].ik_add =1741a11891c991688c36386f23ad82aa
+round[ 2].istart =8333f0afff15a6edc191b409770e815e
+round[ 2].is_row =830eb4edff338109c115f05e7791a6af
+round[ 2].is_box =41d7c6537d669140dd2f179d02acc51b
+round[ 2].ik_sch =ead27321b58dbad2312bf5607f8d292f
+round[ 2].ik_add =ab05b572c8eb2b92ec04e2fd7d21ec34
+round[ 3].istart =98b5541009a9c5ff1114ea187f3cfd3a
+round[ 3].is_row =983ceaff09b5fd1811a9543a7f14c510
+round[ 3].is_box =e26dbb7d40d22134e3b7fda26b9b077c
+round[ 3].ik_sch =4e54f70e5f5fc9f384a64fb24ea6dc4f
+round[ 3].ik_add =ac394c731f8de8c76711b210253ddb33
+round[ 4].istart =bd6d1268f356657ddc66bad4f1e3f416
+round[ 4].is_row =bde3ba7df36df4d4dc561216f1666568
+round[ 4].is_box =cd4dc0137eb3ba1993b939ff2bd3bcf7
+round[ 4].ik_sch =6d88a37a110b3efddbf98641ca0093fd
+round[ 4].ik_add =a0c563696fb884e44840bfbee1d32f0a
+round[ 5].istart =712e6c5c23d3bdfae8310ddd3fd6df21
+round[ 5].is_row =71d60dfa232edfdde8d36c213f31bd5c
+round[ 5].is_box =2c4af31432c3efc9c8a9b87b252ecda7
+round[ 5].ik_sch =d4d1c6f87c839d87caf2b8bc11f915bc
+round[ 5].ik_add =f89b35ec4e40724e025b00c734d7d81b
+round[ 6].istart =3a06981e1ba543cfbaa99f124fefe363
+round[ 6].is_row =3aef9fcf1b06e312baa598634fa9431e
+round[ 6].is_box =a2616e5f44a54d39c029e20092b764e9
+round[ 6].ik_sch =ef44a541a8525b7fb671253bdb0bad00
+round[ 6].ik_add =4d25cb1eecf716467658c73b49bcc9e9
+round[ 7].istart =912c76763af956dec0f2ce2ea93e98da
+round[ 7].is_row =913ecede3a2c982ec0f976daa9f25676
+round[ 7].is_box =acd1ec9ca242e2c31f690f7ab704b90f
+round[ 7].ik_sch =3d80477d4716fe3e1e237e446d7a883b
+round[ 7].ik_add =9151abe1e5541cfd014a713eda7e3134
+round[ 8].istart =54fe6141b3b0eab968d310afd60d641e
+round[ 8].is_row =540d10b9b3fe64af68b0611ed6d3ea41
+round[ 8].is_box =fdf37cdb4b0c8c1bf7fcd8e94aa9bbf8
+round[ 8].ik_sch =f2c295f27a96b9435935807a7359f67f
+round[ 8].ik_add =0f31e929319a3558aec9589339f04d87
+round[ 9].istart =89b5884ac05653032e389b21604d123c
+round[ 9].is_row =894d9b03c0b512212e56883c6038534a
+round[ 9].is_box =f265e8d51fd2397bc3b9976d9076505c
+round[ 9].ik_sch =a0fafe1788542cb123a339392a6c7605
+round[ 9].ik_add =529f16c2978615cae01aae54ba1a2659
+round[10].istart =09287f476f746abf2c4a6204da08e3ee
+round[10].is_row =090862bf6f28e3042c747feeda4a6a47
+round[10].is_box =40bfabf406ee4d3042ca6b997a5c5816
+round[10].ik_sch =2b7e151628aed2a6abf7158809cf4f3c
+round[10].ioutput=6bc1bee22e409f96e93d7e117393172a
+#--------------------------
+t=AES128-3
+k=2b7e151628aed2a6abf7158809cf4f3c
+p=ae2d8a571e03ac9c9eb76fac45af8e51
+# encryption
+round[ 0].input  =ae2d8a571e03ac9c9eb76fac45af8e51
+round[ 0].k_sch  =2b7e151628aed2a6abf7158809cf4f3c
+round[ 1].start  =85539f4136ad7e3a35407a244c60c16d
+round[ 1].s_box  =97eddb830595f3809609da3629d0783c
+round[ 1].s_row  =9795da3c0509788396d0db8029edf336
+round[ 1].m_col  =77efe995ea1c626307db70b1bbd06309
+round[ 1].k_sch  =a0fafe1788542cb123a339392a6c7605
+round[ 2].start  =d715178262484ed22478498891bc150c
+round[ 2].s_box  =0e59f013aa522fb536bc3bc4816559fe
+round[ 2].s_row  =0e523bfeaabc59133665f0b581592fc4
+round[ 2].m_col  =2f19339cda31912686426cbe1986d17d
+round[ 2].k_sch  =f2c295f27a96b9435935807a7359f67f
+round[ 3].start  =dddba66ea0a72865df77ecc46adf2702
+round[ 3].s_box  =c1b9249fe05c344d9ef5ce1c029ecc77
+round[ 3].s_row  =c15cce77e0f5cc9f9e9e244d02b9341c
+round[ 3].m_col  =c44783248cc12c27f7989f99fc2bf7b3
+round[ 3].k_sch  =3d80477d4716fe3e1e237e446d7a883b
+round[ 4].start  =f9c7c459cbd7d219e9bbe1dd91517f88
+round[ 4].s_box  =99c61ccb1f0eb5d41eeaf8c181d1d2c4
+round[ 4].s_row  =990ef8c41fead2cb1ed11cd481c6b5c1
+round[ 4].m_col  =07522bd502760c949c57905c3c136e72
+round[ 4].k_sch  =ef44a541a8525b7fb671253bdb0bad00
+round[ 5].start  =e8168e94aa2457eb2a26b567e718c372
+round[ 5].s_box  =9b471922ac365be9e5f7d58594ad2e40
+round[ 5].s_row  =9b36d540acf72e22e5ad19e994475b85
+round[ 5].m_col  =e2d3dcd54d096172cd665a492472f1aa
+round[ 5].k_sch  =d4d1c6f87c839d87caf2b8bc11f915bc
+round[ 6].start  =36021a2d318afcf50794e2f5358be416
+round[ 6].s_box  =0577a2d8c77eb0e6c52298e6963d6947
+round[ 6].s_row  =057e9847c72269d8c53da2e69677b0e6
+round[ 6].m_col  =570d996742e044b292a4961cf855abb1
+round[ 6].k_sch  =6d88a37a110b3efddbf98641ca0093fd
+round[ 7].start  =3a853a1d53eb7a4f495d105d3255384c
+round[ 7].s_box  =809780a4ede9da843b4cca4c23fc0729
+round[ 7].s_row  =80e9ca29ed4c07a43bfc80842397da4c
+round[ 7].m_col  =d8259deab6d858346dc74b22722fcfb0
+round[ 7].k_sch  =4e54f70e5f5fc9f384a64fb24ea6dc4f
+round[ 8].start  =96716ae4e98791c7e96104903c8913ff
+round[ 8].s_box  =90a302691e1781c61eeff260eba77d16
+round[ 8].s_row  =9017f2161eef7d691ea702c6eba38160
+round[ 8].m_col  =e6a542620235b0620a8bec10d24ef1c4
+round[ 8].k_sch  =ead27321b58dbad2312bf5607f8d292f
+round[ 9].start  =0c773143b7b80ab03ba01970adc3d8eb
+round[ 9].s_box  =fef5c71aa96c67e7e2e0d451952e61e9
+round[ 9].s_row  =fe6cd4e9a9e0611ae22ec7e795f56751
+round[ 9].m_col  =6ea8016809cba5558d0b6b01039c5d94
+round[ 9].k_sch  =ac7766f319fadc2128d12941575c006e
+round[10].start  =c2df679b10317974a5da424054c05dfa
+round[10].s_box  =259e8514cac7b69206572c0920ba4c2d
+round[10].s_row  =25c72c2dca574c1406ba8592209eb609
+round[10].k_sch  =d014f9a8c9ee2589e13f0cc8b6630ca6
+round[10].output =f5d3d58503b9699de785895a96fdbaaf
+# decryption
+round[ 0].iinput =f5d3d58503b9699de785895a96fdbaaf
+round[ 0].ik_sch =d014f9a8c9ee2589e13f0cc8b6630ca6
+round[ 1].istart =25c72c2dca574c1406ba8592209eb609
+round[ 1].is_row =259e8514cac7b69206572c0920ba4c2d
+round[ 1].is_box =c2df679b10317974a5da424054c05dfa
+round[ 1].ik_sch =ac7766f319fadc2128d12941575c006e
+round[ 1].ik_add =6ea8016809cba5558d0b6b01039c5d94
+round[ 2].istart =fe6cd4e9a9e0611ae22ec7e795f56751
+round[ 2].is_row =fef5c71aa96c67e7e2e0d451952e61e9
+round[ 2].is_box =0c773143b7b80ab03ba01970adc3d8eb
+round[ 2].ik_sch =ead27321b58dbad2312bf5607f8d292f
+round[ 2].ik_add =e6a542620235b0620a8bec10d24ef1c4
+round[ 3].istart =9017f2161eef7d691ea702c6eba38160
+round[ 3].is_row =90a302691e1781c61eeff260eba77d16
+round[ 3].is_box =96716ae4e98791c7e96104903c8913ff
+round[ 3].ik_sch =4e54f70e5f5fc9f384a64fb24ea6dc4f
+round[ 3].ik_add =d8259deab6d858346dc74b22722fcfb0
+round[ 4].istart =80e9ca29ed4c07a43bfc80842397da4c
+round[ 4].is_row =809780a4ede9da843b4cca4c23fc0729
+round[ 4].is_box =3a853a1d53eb7a4f495d105d3255384c
+round[ 4].ik_sch =6d88a37a110b3efddbf98641ca0093fd
+round[ 4].ik_add =570d996742e044b292a4961cf855abb1
+round[ 5].istart =057e9847c72269d8c53da2e69677b0e6
+round[ 5].is_row =0577a2d8c77eb0e6c52298e6963d6947
+round[ 5].is_box =36021a2d318afcf50794e2f5358be416
+round[ 5].ik_sch =d4d1c6f87c839d87caf2b8bc11f915bc
+round[ 5].ik_add =e2d3dcd54d096172cd665a492472f1aa
+round[ 6].istart =9b36d540acf72e22e5ad19e994475b85
+round[ 6].is_row =9b471922ac365be9e5f7d58594ad2e40
+round[ 6].is_box =e8168e94aa2457eb2a26b567e718c372
+round[ 6].ik_sch =ef44a541a8525b7fb671253bdb0bad00
+round[ 6].ik_add =07522bd502760c949c57905c3c136e72
+round[ 7].istart =990ef8c41fead2cb1ed11cd481c6b5c1
+round[ 7].is_row =99c61ccb1f0eb5d41eeaf8c181d1d2c4
+round[ 7].is_box =f9c7c459cbd7d219e9bbe1dd91517f88
+round[ 7].ik_sch =3d80477d4716fe3e1e237e446d7a883b
+round[ 7].ik_add =c44783248cc12c27f7989f99fc2bf7b3
+round[ 8].istart =c15cce77e0f5cc9f9e9e244d02b9341c
+round[ 8].is_row =c1b9249fe05c344d9ef5ce1c029ecc77
+round[ 8].is_box =dddba66ea0a72865df77ecc46adf2702
+round[ 8].ik_sch =f2c295f27a96b9435935807a7359f67f
+round[ 8].ik_add =2f19339cda31912686426cbe1986d17d
+round[ 9].istart =0e523bfeaabc59133665f0b581592fc4
+round[ 9].is_row =0e59f013aa522fb536bc3bc4816559fe
+round[ 9].is_box =d715178262484ed22478498891bc150c
+round[ 9].ik_sch =a0fafe1788542cb123a339392a6c7605
+round[ 9].ik_add =77efe995ea1c626307db70b1bbd06309
+round[10].istart =9795da3c0509788396d0db8029edf336
+round[10].is_row =97eddb830595f3809609da3629d0783c
+round[10].is_box =85539f4136ad7e3a35407a244c60c16d
+round[10].ik_sch =2b7e151628aed2a6abf7158809cf4f3c
+round[10].ioutput=ae2d8a571e03ac9c9eb76fac45af8e51
+#--------------------------
+t=AES128-4
+k=2b7e151628aed2a6abf7158809cf4f3c
+p=30c81c46a35ce411e5fbc1191a0a52ef
+# encryption
+round[ 0].input  =30c81c46a35ce411e5fbc1191a0a52ef
+round[ 0].k_sch  =2b7e151628aed2a6abf7158809cf4f3c
+round[ 1].start  =1bb609508bf236b74e0cd49113c51dd3
+round[ 1].s_box  =af4e01533d8905a92ffe48817da6a466
+round[ 1].s_row  =af8948663dfea4532fa601a97d4e0581
+round[ 1].m_col  =eb181ce7947e65bb07d26b9fac6fa1d5
+round[ 1].k_sch  =a0fafe1788542cb123a339392a6c7605
+round[ 2].start  =4be2e2f01c2a490a247152a68603d7d0
+round[ 2].s_box  =b398988c9ce53b6736a30024447b0e70
+round[ 2].s_row  =b3e500709ca30e8c367b986744983b24
+round[ 2].m_col  =3912c6cb5f5fac111e14cf772406c627
+round[ 2].k_sch  =f2c295f27a96b9435935807a7359f67f
+round[ 3].start  =cbd0533925c9155247214f0d575f3058
+round[ 3].s_box  =1f70ed123fdd5900a0fd84d75bcf046a
+round[ 3].s_row  =1fdd846a3ffd0412a0cfed005b7059d7
+round[ 3].m_col  =ac436fac74c0fc9cfc09aed9a887fb71
+round[ 3].k_sch  =3d80477d4716fe3e1e237e446d7a883b
+round[ 4].start  =91c328d133d602a2e22ad09dc5fd734a
+round[ 4].s_box  =812e343ec3f6773a98e5705ea6548fd6
+round[ 4].s_row  =81f670d6c3e58f3e9854343aa62e775e
+round[ 4].m_col  =be30f6a918a66148d956eaa70c3d8414
+round[ 4].k_sch  =ef44a541a8525b7fb671253bdb0bad00
+round[ 5].start  =517453e8b0f43a376f27cf9cd7362914
+round[ 5].s_box  =d192ed9be7bf809aa8cc8ade0e05a5fa
+round[ 5].s_row  =d1bf8afae7cca59ba805ed9a0e9280de
+round[ 5].m_col  =13cb74b2a40bcc763314d924ef74fea7
+round[ 5].k_sch  =d4d1c6f87c839d87caf2b8bc11f915bc
+round[ 6].start  =c71ab24ad88851f1f9e66198fe8deb1b
+round[ 6].s_box  =c6a237d661c4d1a1998eef46bb5de9af
+round[ 6].s_row  =c6c4efaf618ee9d6995d37a1bba2d146
+round[ 6].m_col  =80d02d3f7490477358db528307ca6a29
+round[ 6].k_sch  =6d88a37a110b3efddbf98641ca0093fd
+round[ 7].start  =ed588e45659b798e8322d4c2cdcaf9d4
+round[ 7].s_box  =556a196e4d14b619ec934825bd749948
+round[ 7].s_row  =551448484d93996eec741919bd6ab625
+round[ 7].m_col  =96ed0933c3ae45015f3681704c8dcf4a
+round[ 7].k_sch  =4e54f70e5f5fc9f384a64fb24ea6dc4f
+round[ 8].start  =d8b9fe3d9cf18cf2db90cec2022b1305
+round[ 8].s_box  =6156bb27dea16489b9608b2577f17d6b
+round[ 8].s_row  =61a18b6bde607d27b9f1bb8977566425
+round[ 8].m_col  =dad5705f5dbe2d2a531fa593555286e1
+round[ 8].k_sch  =ead27321b58dbad2312bf5607f8d292f
+round[ 9].start  =3007037ee83397f8623450f32adfafce
+round[ 9].s_box  =04c57bf39bc38841aa18530de59e798b
+round[ 9].s_row  =04c3538b9b1879f3aa9e7b41e5c5880d
+round[ 9].m_col  =8ee7e7918fd37f2acc41018200fa3c63
+round[ 9].k_sch  =ac7766f319fadc2128d12941575c006e
+round[10].start  =229081629629a30be49028c357a63c0d
+round[10].s_box  =93600caa90a50a2b6960342e5b24ebd7
+round[10].s_row  =93a534d79060ebaa69240c2b5b600a2e
+round[10].k_sch  =d014f9a8c9ee2589e13f0cc8b6630ca6
+round[10].output =43b1cd7f598ece23881b00e3ed030688
+# decryption
+round[ 0].iinput =43b1cd7f598ece23881b00e3ed030688
+round[ 0].ik_sch =d014f9a8c9ee2589e13f0cc8b6630ca6
+round[ 1].istart =93a534d79060ebaa69240c2b5b600a2e
+round[ 1].is_row =93600caa90a50a2b6960342e5b24ebd7
+round[ 1].is_box =229081629629a30be49028c357a63c0d
+round[ 1].ik_sch =ac7766f319fadc2128d12941575c006e
+round[ 1].ik_add =8ee7e7918fd37f2acc41018200fa3c63
+round[ 2].istart =04c3538b9b1879f3aa9e7b41e5c5880d
+round[ 2].is_row =04c57bf39bc38841aa18530de59e798b
+round[ 2].is_box =3007037ee83397f8623450f32adfafce
+round[ 2].ik_sch =ead27321b58dbad2312bf5607f8d292f
+round[ 2].ik_add =dad5705f5dbe2d2a531fa593555286e1
+round[ 3].istart =61a18b6bde607d27b9f1bb8977566425
+round[ 3].is_row =6156bb27dea16489b9608b2577f17d6b
+round[ 3].is_box =d8b9fe3d9cf18cf2db90cec2022b1305
+round[ 3].ik_sch =4e54f70e5f5fc9f384a64fb24ea6dc4f
+round[ 3].ik_add =96ed0933c3ae45015f3681704c8dcf4a
+round[ 4].istart =551448484d93996eec741919bd6ab625
+round[ 4].is_row =556a196e4d14b619ec934825bd749948
+round[ 4].is_box =ed588e45659b798e8322d4c2cdcaf9d4
+round[ 4].ik_sch =6d88a37a110b3efddbf98641ca0093fd
+round[ 4].ik_add =80d02d3f7490477358db528307ca6a29
+round[ 5].istart =c6c4efaf618ee9d6995d37a1bba2d146
+round[ 5].is_row =c6a237d661c4d1a1998eef46bb5de9af
+round[ 5].is_box =c71ab24ad88851f1f9e66198fe8deb1b
+round[ 5].ik_sch =d4d1c6f87c839d87caf2b8bc11f915bc
+round[ 5].ik_add =13cb74b2a40bcc763314d924ef74fea7
+round[ 6].istart =d1bf8afae7cca59ba805ed9a0e9280de
+round[ 6].is_row =d192ed9be7bf809aa8cc8ade0e05a5fa
+round[ 6].is_box =517453e8b0f43a376f27cf9cd7362914
+round[ 6].ik_sch =ef44a541a8525b7fb671253bdb0bad00
+round[ 6].ik_add =be30f6a918a66148d956eaa70c3d8414
+round[ 7].istart =81f670d6c3e58f3e9854343aa62e775e
+round[ 7].is_row =812e343ec3f6773a98e5705ea6548fd6
+round[ 7].is_box =91c328d133d602a2e22ad09dc5fd734a
+round[ 7].ik_sch =3d80477d4716fe3e1e237e446d7a883b
+round[ 7].ik_add =ac436fac74c0fc9cfc09aed9a887fb71
+round[ 8].istart =1fdd846a3ffd0412a0cfed005b7059d7
+round[ 8].is_row =1f70ed123fdd5900a0fd84d75bcf046a
+round[ 8].is_box =cbd0533925c9155247214f0d575f3058
+round[ 8].ik_sch =f2c295f27a96b9435935807a7359f67f
+round[ 8].ik_add =3912c6cb5f5fac111e14cf772406c627
+round[ 9].istart =b3e500709ca30e8c367b986744983b24
+round[ 9].is_row =b398988c9ce53b6736a30024447b0e70
+round[ 9].is_box =4be2e2f01c2a490a247152a68603d7d0
+round[ 9].ik_sch =a0fafe1788542cb123a339392a6c7605
+round[ 9].ik_add =eb181ce7947e65bb07d26b9fac6fa1d5
+round[10].istart =af8948663dfea4532fa601a97d4e0581
+round[10].is_row =af4e01533d8905a92ffe48817da6a466
+round[10].is_box =1bb609508bf236b74e0cd49113c51dd3
+round[10].ik_sch =2b7e151628aed2a6abf7158809cf4f3c
+round[10].ioutput=30c81c46a35ce411e5fbc1191a0a52ef
+#--------------------------
+t=AES128-5
+k=2b7e151628aed2a6abf7158809cf4f3c
+p=f69f2445df4f9b17ad2b417be66c3710
+# encryption
+round[ 0].input  =f69f2445df4f9b17ad2b417be66c3710
+round[ 0].k_sch  =2b7e151628aed2a6abf7158809cf4f3c
+round[ 1].start  =dde13153f7e149b106dc54f3efa3782c
+round[ 1].s_box  =c1f8c7ed68f83bc86f86200ddf0abc71
+round[ 1].s_row  =c1f820716886bced6f0ac7c8dff83b0d
+round[ 1].m_col  =db3bea62104da143cfe1b3f7807446a3
+round[ 1].k_sch  =a0fafe1788542cb123a339392a6c7605
+round[ 2].start  =7bc1147598198df2ec428aceaa1830a6
+round[ 2].s_box  =2178fa9d46d45d89ce2c7e8bacad0424
+round[ 2].s_row  =21d47e24462c049dceadfa89ac785d8b
+round[ 2].m_col  =7f346581618fdec318130c171d30e8c7
+round[ 2].k_sch  =f2c295f27a96b9435935807a7359f67f
+round[ 3].start  =8df6f0731b19678041268c6d6e691eb8
+round[ 3].s_box  =5d428c8fafd485cd83f7643c9ff9726c
+round[ 3].s_row  =5dd4646caff7728f83f98ccd9f42853c
+round[ 3].m_col  =d52ef58fba43366a4c28356a5ab38805
+round[ 3].k_sch  =3d80477d4716fe3e1e237e446d7a883b
+round[ 4].start  =e8aeb2f2fd55c854520b4b2e37c9003e
+round[ 4].s_box  =9be4378954fce820002bb3319add63b2
+round[ 4].s_row  =9bfcb3b2542b638900dd37209ae4e831
+round[ 4].m_col  =3304d7863f2e39bd6bd8d3aac15be6db
+round[ 4].k_sch  =ef44a541a8525b7fb671253bdb0bad00
+round[ 5].start  =dc4072c7977c62c2dda9f6911a504bdb
+round[ 5].s_box  =860940c68810aa25c1d34281a253b3b9
+round[ 5].s_row  =861042b988d3b3c6c1534025a209aa81
+round[ 5].m_col  =dcd9c2aa103d777409827d016fd47c47
+round[ 5].k_sch  =d4d1c6f87c839d87caf2b8bc11f915bc
+round[ 6].start  =080804526cbeeaf3c370c5bd7e2d69fb
+round[ 6].s_box  =3030f20050ae870d2e51a67af3d8f90f
+round[ 6].s_row  =30aea60f5051f9002ed8f20df330877a
+round[ 6].m_col  =2089d846aae2e858d0851e42507b584d
+round[ 6].k_sch  =6d88a37a110b3efddbf98641ca0093fd
+round[ 7].start  =4d017b3cbbe9d6a50b7c98039a7bcbb0
+round[ 7].s_box  =e37c21ebea1ef6062b10467bb8211fe7
+round[ 7].s_row  =e31e46e7ea101feb2b212106b87cf67b
+round[ 7].m_col  =5ef243b30b00e2e7120c4271623abeaf
+round[ 7].k_sch  =4e54f70e5f5fc9f384a64fb24ea6dc4f
+round[ 8].start  =10a6b4bd545f2b1496aa0dc32c9c62e0
+round[ 8].s_box  =ca248d7a20cff1fa90acd72e71deaae1
+round[ 8].s_row  =cacfd7e120acaa7a90de8dfa7124f12e
+round[ 8].m_col  =f3cc88847ffc4d9235415a17511fde1a
+round[ 8].k_sch  =ead27321b58dbad2312bf5607f8d292f
+round[ 9].start  =191efba5ca71f740046aaf772e92f735
+round[ 9].s_box  =d4720f0674a36809f20279f5314f6896
+round[ 9].s_row  =d4a3799674026806f24f0f09317268f5
+round[ 9].m_col  =a294248a80ceacfa2874b85f699897b8
+round[ 9].k_sch  =ac7766f319fadc2128d12941575c006e
+round[10].start  =0ee34279993470db00a5911e3ec497d6
+round[10].s_box  =ab112cb6ee1851b963068172b21c88f6
+round[10].s_row  =ab1881f6ee0688b6631c2cb9b2115172
+round[10].k_sch  =d014f9a8c9ee2589e13f0cc8b6630ca6
+round[10].output =7b0c785e27e8ad3f8223207104725dd4
+# decryption
+round[ 0].iinput =7b0c785e27e8ad3f8223207104725dd4
+round[ 0].ik_sch =d014f9a8c9ee2589e13f0cc8b6630ca6
+round[ 1].istart =ab1881f6ee0688b6631c2cb9b2115172
+round[ 1].is_row =ab112cb6ee1851b963068172b21c88f6
+round[ 1].is_box =0ee34279993470db00a5911e3ec497d6
+round[ 1].ik_sch =ac7766f319fadc2128d12941575c006e
+round[ 1].ik_add =a294248a80ceacfa2874b85f699897b8
+round[ 2].istart =d4a3799674026806f24f0f09317268f5
+round[ 2].is_row =d4720f0674a36809f20279f5314f6896
+round[ 2].is_box =191efba5ca71f740046aaf772e92f735
+round[ 2].ik_sch =ead27321b58dbad2312bf5607f8d292f
+round[ 2].ik_add =f3cc88847ffc4d9235415a17511fde1a
+round[ 3].istart =cacfd7e120acaa7a90de8dfa7124f12e
+round[ 3].is_row =ca248d7a20cff1fa90acd72e71deaae1
+round[ 3].is_box =10a6b4bd545f2b1496aa0dc32c9c62e0
+round[ 3].ik_sch =4e54f70e5f5fc9f384a64fb24ea6dc4f
+round[ 3].ik_add =5ef243b30b00e2e7120c4271623abeaf
+round[ 4].istart =e31e46e7ea101feb2b212106b87cf67b
+round[ 4].is_row =e37c21ebea1ef6062b10467bb8211fe7
+round[ 4].is_box =4d017b3cbbe9d6a50b7c98039a7bcbb0
+round[ 4].ik_sch =6d88a37a110b3efddbf98641ca0093fd
+round[ 4].ik_add =2089d846aae2e858d0851e42507b584d
+round[ 5].istart =30aea60f5051f9002ed8f20df330877a
+round[ 5].is_row =3030f20050ae870d2e51a67af3d8f90f
+round[ 5].is_box =080804526cbeeaf3c370c5bd7e2d69fb
+round[ 5].ik_sch =d4d1c6f87c839d87caf2b8bc11f915bc
+round[ 5].ik_add =dcd9c2aa103d777409827d016fd47c47
+round[ 6].istart =861042b988d3b3c6c1534025a209aa81
+round[ 6].is_row =860940c68810aa25c1d34281a253b3b9
+round[ 6].is_box =dc4072c7977c62c2dda9f6911a504bdb
+round[ 6].ik_sch =ef44a541a8525b7fb671253bdb0bad00
+round[ 6].ik_add =3304d7863f2e39bd6bd8d3aac15be6db
+round[ 7].istart =9bfcb3b2542b638900dd37209ae4e831
+round[ 7].is_row =9be4378954fce820002bb3319add63b2
+round[ 7].is_box =e8aeb2f2fd55c854520b4b2e37c9003e
+round[ 7].ik_sch =3d80477d4716fe3e1e237e446d7a883b
+round[ 7].ik_add =d52ef58fba43366a4c28356a5ab38805
+round[ 8].istart =5dd4646caff7728f83f98ccd9f42853c
+round[ 8].is_row =5d428c8fafd485cd83f7643c9ff9726c
+round[ 8].is_box =8df6f0731b19678041268c6d6e691eb8
+round[ 8].ik_sch =f2c295f27a96b9435935807a7359f67f
+round[ 8].ik_add =7f346581618fdec318130c171d30e8c7
+round[ 9].istart =21d47e24462c049dceadfa89ac785d8b
+round[ 9].is_row =2178fa9d46d45d89ce2c7e8bacad0424
+round[ 9].is_box =7bc1147598198df2ec428aceaa1830a6
+round[ 9].ik_sch =a0fafe1788542cb123a339392a6c7605
+round[ 9].ik_add =db3bea62104da143cfe1b3f7807446a3
+round[10].istart =c1f820716886bced6f0ac7c8dff83b0d
+round[10].is_row =c1f8c7ed68f83bc86f86200ddf0abc71
+round[10].is_box =dde13153f7e149b106dc54f3efa3782c
+round[10].ik_sch =2b7e151628aed2a6abf7158809cf4f3c
+round[10].ioutput=f69f2445df4f9b17ad2b417be66c3710
+#--------------------------
